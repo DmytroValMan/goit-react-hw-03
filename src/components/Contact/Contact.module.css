@@ -1,0 +1,24 @@
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btnWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.btn {
+  padding: 4px;
+}
+
+.icon {
+  margin-right: 8px;
+}

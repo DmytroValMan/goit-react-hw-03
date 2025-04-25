@@ -1,9 +1,0 @@
-.list {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.btn {
-  text-transform: capitalize;
-}

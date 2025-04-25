@@ -1,0 +1,12 @@
+.label {
+  display: block;
+}
+
+.input {
+  outline: none;
+  margin-bottom: 24px;
+}
+
+.input:focus {
+  border: solid 2px rgb(70, 70, 234);
+}

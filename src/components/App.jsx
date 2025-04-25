@@ -1,71 +1,51 @@
 import { useState, useEffect } from "react";
+import { nanoid } from "nanoid";
 
-import Description from "./Description/Description";
-import Options from "./Options/Options";
-import Feedback from "./Feedback/Feedback";
-import Notification from "./Notification/Notification";
+import ContactForm from "./ContactForm/ContactForm";
+import SearchBox from "./SearchBox/SearchBox";
+import ContactList from "./ContactList/ContactList";
+
+const contactsList = [
+  { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
+  { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
+  { id: "id-3", name: "Eden Clements", number: "645-17-79" },
+  { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
+];
 
 const App = () => {
-  const [clicks, setClicks] = useState(() => {
-    const clicksJson = localStorage.getItem("clicksState");
-
-    if (clicksJson !== null) {
-      return JSON.parse(clicksJson);
+  const [contacts, setContacts] = useState(() => {
+    const contactsListJson = localStorage.getItem("contactsList");
+    if (contactsListJson !== null) {
+      return JSON.parse(contactsListJson);
     }
-    return {
-      good: 0,
-      neutral: 0,
-      bad: 0,
-    };
+    return [];
   });
+  const [searchField, setSearchField] = useState("");
 
   useEffect(() => {
-    localStorage.setItem("clicksState", JSON.stringify(clicks));
-  }, [clicks]);
+    localStorage.setItem("contactsList", JSON.stringify(contacts));
+  }, [contacts]);
 
-  const arrValues = Object.values(clicks);
-  const totalFeedback = arrValues.reduce((total, value) => total + value, 0);
-
-  const updateFeedback = (feedbackType) => {
-    setClicks({
-      ...clicks,
-      [feedbackType]: clicks[feedbackType] + 1,
-    });
+  const handleContacts = (newContact) => {
+    newContact.id = nanoid();
+    setContacts((actualContacts) => [...actualContacts, newContact]);
   };
 
-  const resetFeedback = () => {
-    const arrKeyNames = Object.keys(clicks);
-    let resetClicks = {};
-    arrKeyNames.forEach((name) => {
-      resetClicks[name] = 0;
-    });
-    setClicks(resetClicks);
-  };
+  const seachedContacts = contacts.filter((contact) => {
+    return contact.name.toLowerCase().includes(searchField.toLowerCase());
+  });
 
-  const positivePercent = () => {
-    const positiveFeedback = totalFeedback - clicks.bad;
-    return `${Math.round((positiveFeedback / totalFeedback) * 100)}%`;
+  const deleteContact = (contactId) => {
+    setContacts(() => contacts.filter((contact) => contact.id !== contactId));
   };
 
   return (
-    <>
-      <Description />
-      <Options
-        names={clicks}
-        updateFeedback={updateFeedback}
-        totalFeedback={totalFeedback}
-        resetFeedback={resetFeedback}
-      />
-      {totalFeedback > 0 ? (
-        <Feedback
-          names={clicks}
-          totalFeedback={totalFeedback}
-          positivePercent={positivePercent}
-        />
-      ) : (
-        <Notification />
-      )}
-    </>
+    <div>
+      <h1>Phonebook</h1>
+      <ContactForm onAddContact={handleContacts} />
+      <SearchBox value={searchField} onSearch={setSearchField} />
+      <ContactList contacts={seachedContacts} onDelete={deleteContact} />
+    </div>
   );
 };
 

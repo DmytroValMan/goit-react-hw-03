@@ -1,0 +1,31 @@
+.form {
+  padding: 8px;
+  margin: 24px 0px;
+  border: solid 2px black;
+  border-radius: 4px;
+  width: 220px;
+}
+
+.label {
+  display: block;
+}
+
+.inputWrapper {
+  margin-bottom: 8px;
+}
+
+.btnWrapper {
+  text-align: center;
+}
+
+.input {
+  outline: none;
+}
+
+.input:focus {
+  border: solid 2px rgb(70, 70, 234);
+}
+
+.errorMsg {
+  color: red;
+}
